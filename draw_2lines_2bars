@@ -1,0 +1,50 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import csv
+
+
+def draw_bar(filename="FUNDS.csv"):
+    # 从文件里获取记录，日期，现价和投入
+    # filename = 'myFundTotal.csv' #统计信息存到这个文件啦
+    with open(filename, 'r') as f:
+        reader = csv.reader(f)
+        header_row = next(reader)  # 获取每一行文件的数据
+
+        funds, returns, my_input, percent = [], [], [], []  # 创建空列表
+        for row in reader:
+            try:
+                fund = row[1]
+                high = int(row[3])
+                low = int(row[6])
+                perct = float(row[7])
+            except ValueError:
+                print('missing data')  # 打印报错信息
+            else:
+                funds.append(fund)
+                returns.append(high)
+                my_input.append(low)
+                percent.append(perct)
+
+    # Get the figure and the axes
+    fig, (ax0, ax1) = plt.subplots(nrows=1,ncols=2, sharey=True, figsize=(7, 4))
+    ax0.barh(funds, returns, height=0.3, color='red',align='edge')
+    ax0.barh(funds, my_input,height=0.3, color='blue', align='center')
+    ax0.set(title='现价', xlabel='现价', ylabel='funds')
+
+    # Repeat for the unit plot
+    ax1.barh(funds, percent, height=0.5, color='orange', align='edge')
+    avg = 1
+    # Plot the average as a vertical line
+    ax1.set(title='收益率', xlabel='收益率', ylabel='')
+    ax1.axvline(x=avg, color='b', label='100%', linestyle='--', linewidth=1)
+
+    # Title the figure
+    fig.suptitle('各基金投入产出比分析', fontsize=14, fontweight='bold');
+
+    # Hide the legends
+    ax1.legend().set_visible(False)
+    ax0.legend().set_visible(False)
+    plt.show()
+
+if __name__ == '__main__':
+    draw_bar("FUNDS.csv")
