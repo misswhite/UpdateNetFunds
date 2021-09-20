@@ -18,16 +18,12 @@ def get_net(fundcode='000000'):
     url = 'http://fund.eastmoney.com/'+fundcode+'.html'
     driver.get(url)
     try:
-        net_fund = driver.find_element_by_xpath('// *[ @ id = "body"] / div[11] / div / div / div[3] / div[1] / div[1] / dl[2] / dd[1] / span[1]').text
+    #  浏览器的xpath('// *[ @ id = "body"] / div[11] / div / div / div[3] / div[1] / div[1] / dl[2] / dd[1] / span[1]')
+        net_fund = driver.find_element_by_xpath('//dd[1]/span[1]').text
+   
     except:
-        try:
-            net_fund = driver.find_element_by_xpath('//*[@id="body"]/div[11]/div/div/div[2]/div[1]/div[1]/dl[3]/dd[1]/span').text
-        except:
-            try:
-                net_fund = driver.find_element_by_xpath('// *[ @ id = "body"] / div[12] / div / div / div[2] / div[1] / div[1] / dl[3] / dd[1] / span').text
-            except:
-                print('fail to locate: '+fundcode)
-                net_fund = str(1.00)
+       print('fail to locate: '+fundcode)
+       net_fund = str(1.00)
 
     if net_fund=='0.00':
         try:
